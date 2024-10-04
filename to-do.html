@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(🚀 TO-Do With 🖥️)</title>
+    <link rel="stylesheet" href="to-do.css">
+</head>
+<body> <!-- CSS CLASS  -->
+    <h1>(TO-DO)</h1>
+    <form id="addTaskForm" onsubmit="event.preventDefault(); addTask();">
+        <!-- Input box for getting the new list from the user -->
+        <input type="text" id="taskInput" placeholder="Enter New Task" required> <!-- Required input -->
+        <button type="button" onclick="addTask()">Add Task</button>
+    </form>
+    <ul id="taskList"></ul>
+
+    <script>
+        // JavaScript to manage the to-do list in the browser
+        const taskList = []; // Storage for tasks
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput').value;
+            if (taskInput) {
+                taskList.push({ task: taskInput, completed: false });
+                renderTasks(); // Call to render the tasks
+                document.getElementById('taskInput').value = ''; // Clear the input
+            }
+        }
+
+        function renderTasks() {
+            const taskListElement = document.getElementById('taskList');
+            taskListElement.innerHTML = ''; // Clear the current list
+            taskList.forEach((task, index) => {
+                const taskItem = document.createElement('li');
+
+                // Create a checkbox for each task
+                const checkbox = document.createElement('input'); // Corrected method name
+                checkbox.type = 'checkbox';
+                checkbox.checked = task.completed;
+                checkbox.onchange = () => {
+                    if (checkbox.checked) {
+                        deleteTask(index); // Delete task if checked
+                    } else {
+                        task.completed = false; // Mark as incomplete
+                    }
+                    renderTasks();
+                };
+                
+                taskItem.appendChild(checkbox); // Add checkbox to the task item
+                taskItem.appendChild(document.createTextNode(task.task));
+                
+                // Create a button to mark as complete/undo
+                const completeButton = document.createElement('button');
+                completeButton.innerText = task.completed ? 'Undo' : 'Complete';
+                completeButton.onclick = () => {
+                    task.completed = !task.completed;
+                    renderTasks();
+                };
+
+                taskItem.appendChild(completeButton); // Add button to the task item
+                taskListElement.appendChild(taskItem); // Add task item to the list
+            });
+        }
+        
+        function deleteTask(index) {
+            taskList.splice(index, 1); // Remove task from the list
+            renderTasks(); // Re-render the tasks
+        }
+    </script>
+</body>
+</html>
