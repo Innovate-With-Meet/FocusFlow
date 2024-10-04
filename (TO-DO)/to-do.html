@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New_To-Do</title>
+    <link rel="stylesheet" href="to-do.css">
+</head>
+<body> <!-- CSS CLASS  -->
+    <h1>(TO-DO)</h1>
+    <form id="addTaskForm" onsubmit="event.preventDefault(); addTask();">
+
+        <!-- input box for getting the new list from the user > & the button event perform the action to the "addTask()" method -->
+        <input type="text" id="taskInput" placeholder="Enter New Task"> <!-- The id is use in the "taskinput" Function to the Add Note-->
+        <button type="button" onclick="addTask()">Add Task</button>
+        <!-- The "addTask() == is a method" -->
+
+    </form>
+    <ul id="taskList"></ul>
+
+
+    <script>
+        // JavaScript to manage the to-do list in the browser
+
+        const taskList = []; //The taskList is a storage that store the task in the taskList && it manipulate the data in the function addTask()
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput').value;
+            if (taskInput) {
+                taskList.push({ task: taskInput, completed: false });
+           // the task: task
+                renderTasks();
+                // it is geting from renderTasks() that is the next function
+                
+                document.getElementById('taskInput').value = '';
+            }
+
+        }
+        function renderTasks() {
+            const taskListElement = document.getElementById('taskList');
+            taskListElement.innerHTML = '';
+            taskList.forEach((task, index) => {
+                const taskItem = document.createElement('li');
+                taskItem.innerText = task.task + (task.completed ? ' - Done' : ' - Pending');
+                taskListElement.appendChild(taskItem);
+            });
+        }
+    </script>
+
+</body>
+</html>
